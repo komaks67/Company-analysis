@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>IT企業 比較ナビ（新卒エンジニア向け）</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="viz-root">
+<header class="site-header">
+  <div class="wrap">
+    <h1>IT企業 比較ナビ</h1>
+    <p class="lead">新卒ソフトウェアエンジニア向けに、Web系・SIerの10社を「年収・働きやすさ・柔軟な働き方・将来性」で比べるサイトです。</p>
+    <p class="meta">データ更新日：<span id="updated"></span>　｜　<a href="#about">データの見方・注意</a></p>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- 重視項目 -->
+  <section class="panel" aria-labelledby="h-weights">
+    <h2 id="h-weights">① 何を重視する？（スライダーで調整）</h2>
+    <p class="hint">動かすとランキングがすぐ変わります。設定はこのブラウザだけに保存されます。</p>
+    <div class="controls">
+      <div id="weights" class="weights"></div>
+      <div class="filter-row">
+        <span class="filter-label">表示する企業：</span>
+        <div class="seg" role="group" aria-label="業界で絞り込み" id="typeFilter">
+          <button data-type="all" aria-pressed="true">すべて</button>
+          <button data-type="Web系" aria-pressed="false">Web系</button>
+          <button data-type="SIer" aria-pressed="false">SIer</button>
+        </div>
+        <button id="resetWeights" class="link-btn">重みをリセット</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ランキング -->
+  <section class="panel" aria-labelledby="h-rank">
+    <div class="panel-head">
+      <h2 id="h-rank">② あなた向けランキング（100点満点）</h2>
+      <button class="link-btn" id="toggleRankTable" aria-expanded="false">表で見る</button>
+    </div>
+    <div class="legend" id="rankLegend"></div>
+    <div id="rankChart" class="chart"></div>
+    <div id="rankTable" class="table-scroll" hidden></div>
+    <p class="note">※「年収」は平均年収から自動で点数化。「働きやすさ・柔軟さ・将来性」は集めた事実をもとにした<strong>目安の評価</strong>です（根拠は各社の詳細に記載）。データ不足の項目は中間点（3点）にしています。</p>
+  </section>
+
+  <!-- 平均年収グラフ -->
+  <section class="panel" aria-labelledby="h-salary">
+    <h2 id="h-salary">③ 平均年収（有価証券報告書ベース）</h2>
+    <div id="salaryChart" class="chart"></div>
+    <p class="note">※会社全体の平均（主に単体）。<strong>平均年齢や対象範囲が会社ごとに違う</strong>ので、そのまま「入社後の年収」とは比べられません。NTTデータは持株会社の数字です。</p>
+  </section>
+
+  <!-- 比較表 -->
+  <section class="panel" aria-labelledby="h-compare">
+    <h2 id="h-compare">④ 項目ごとに比較（最大4社を選択）</h2>
+    <div id="picker" class="picker"></div>
+    <div id="compareTable" class="table-scroll"></div>
+    <div class="badges-legend">
+      <span class="badge official">公式</span>会社の公式資料・決算書で確認
+      <span class="badge secondary">二次</span>報道・まとめサイト等で確認（原本は要確認）
+      <span class="badge unknown">要確認</span>公開データが見つからない
+    </div>
+  </section>
+
+  <!-- 各社詳細 -->
+  <section class="panel" aria-labelledby="h-detail">
+    <h2 id="h-detail">⑤ 各社の詳細・自分用メモ</h2>
+    <p class="hint">メモはこのブラウザだけに保存され、他の人には見えません（別の端末とは共有されません）。</p>
+    <div id="details"></div>
+  </section>
+
+  <section class="panel" id="about" aria-labelledby="h-about">
+    <h2 id="h-about">データの見方・注意</h2>
+    <ul class="about-list">
+      <li>数字は2026年11月時点で公開されている情報をClaude（AI）がネット検索で集めたものです。<strong>必ず出典リンクで原本を確認してください。</strong></li>
+      <li>見つからなかった数値は推測で埋めず「公開データなし／要確認」と書いています。</li>
+      <li>「社風」などの（推測）と書いた項目は、事実ではなく一般的な傾向の説明です。</li>
+      <li>平均年収は全社員の平均です。新卒・エンジニア職の年収とは異なります。</li>
+      <li>企業の追加・修正は、サイト管理者がClaude Codeで <code>data/companies.js</code> を更新して行います。</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="site-footer"><div class="wrap">個人の就活用に作成した非公式の比較サイトです。各社とは関係ありません。</div></footer>
+<div id="tooltip" class="tooltip" role="tooltip" hidden></div>
+</div>
+<script src="data/companies.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
