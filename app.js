@@ -14,7 +14,9 @@
 
   // ---------- helpers ----------
   function shortName(n) {
-    return ({ "サイバーエージェント": "サイバーA", "野村総合研究所": "野村総研", "楽天グループ": "楽天", "TISI（旧TIS）": "TISI" })[n] || n;
+    return ({ "サイバーエージェント": "サイバーA", "野村総合研究所": "野村総研", "楽天グループ": "楽天", "TISI（旧TIS）": "TISI",
+      "つうけんアドバンスシステムズ": "つうけんAS", "NTTデータ北海道": "NTTデータ北海道", "北海道総合通信網（HOTnet）": "HOTnet",
+      "クリプトン・フューチャー・メディア": "クリプトン", "インフィニットループ": "インフィニットL" })[n] || n;
   }
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
@@ -40,13 +42,26 @@
     return badge(f.conf) + esc(f.text) + srcLink(f.src);
   }
 
-  // 年収スコア：800万円→1点、1450万円→5点（直線）
-  function payScore(c) {
+  // 年収スコア（1〜5点）
+  //  平均年収：450万円→1点、1,450万円→5点（直線）
+  //  初任給（月額）：20万円→1点、32万円→5点（直線）
+  //  両方あれば平均。どちらもなければ payEstimate（推定）、それもなければ3点
+  function lin(v, lo, hi) { return Math.max(1, Math.min(5, 1 + (v - lo) / (hi - lo) * 4)); }
+  function payInfo(c) {
+    var parts = [], basis = [];
     var v = c.avgSalary && c.avgSalary.value;
-    if (typeof v !== "number") return 3;
-    var s = 1 + (v - 800) / (1450 - 800) * 4;
-    return Math.round(Math.max(1, Math.min(5, s)) * 10) / 10;
+    if (typeof v === "number") { parts.push(lin(v, 450, 1450)); basis.push("平均年収" + v.toLocaleString() + "万円"); }
+    if (typeof c.startingMonthly === "number") { parts.push(lin(c.startingMonthly, 20, 32)); basis.push("初任給 月" + c.startingMonthly + "万円"); }
+    if (parts.length) {
+      var avg = parts.reduce(function (a, b) { return a + b; }, 0) / parts.length;
+      return { score: Math.round(avg * 10) / 10, kind: "data", text: basis.join("と") + "から自動計算" };
+    }
+    if (c.payEstimate && typeof c.payEstimate.score === "number") {
+      return { score: c.payEstimate.score, kind: "estimate", text: "（推定）" + c.payEstimate.basis };
+    }
+    return { score: 3, kind: "none", text: "年収・初任給のデータがないため中間の3（データ不足）" };
   }
+  function payScore(c) { return payInfo(c).score; }
   function scoresOf(c) {
     var sc = c.scores || {};
     return {
@@ -63,7 +78,7 @@
   var picks = load(LS.picks, null) || COMPANIES.slice(0, 3).map(function (c) { return c.id; });
 
   function visible() {
-    return COMPANIES.filter(function (c) { return typeFilter === "all" || c.type === typeFilter; });
+    return COMPANIES.filter(function (c) { return typeFilter === "all" || (typeFilter === "北海道" ? String(c.region || "").indexOf("北海道") === 0 : c.type === typeFilter); });
   }
   function ranked() {
     var wsum = AXES.reduce(function (a, x) { return a + weights[x.key]; }, 0);
@@ -132,7 +147,7 @@
       var y = top + i * rowH, by = y + (rowH - barH) / 2;
       svg.push('<g class="row" data-i="' + i + '">');
       svg.push('<rect class="hit" x="0" y="' + y + '" width="' + W + '" height="' + rowH + '" rx="4"/>');
-      svg.push('<text x="' + (labelW - 8) + '" y="' + (y + rowH / 2 + 4) + '" text-anchor="end">' + (i + 1) + ". " + esc(narrow ? shortName(d.c.name) : d.c.name) + "</text>");
+      svg.push('<text x="' + (labelW - 8) + '" y="' + (y + rowH / 2 + 4) + '" text-anchor="end">' + (i + 1) + ". " + esc(narrow || d.c.name.length > 10 ? shortName(d.c.name) : d.c.name) + "</text>");
       var x = labelW;
       var nonzero = d.parts.map(function (p, k) { return p > 0.01 ? k : -1; }).filter(function (k) { return k >= 0; });
       var last = nonzero[nonzero.length - 1];
@@ -157,7 +172,7 @@
       var d = data[Number(g.getAttribute("data-i"))];
       var html = '<div class="t-title">' + esc(d.c.name) + "：" + Math.round(d.total) + "点</div>" +
         AXES.map(function (x, k) {
-          return '<div class="t-row"><span><i style="background:' + x.color + '"></i>' + x.label + "（" + d.s[x.key] + "/5）</span><span>+" + d.parts[k].toFixed(1) + "</span></div>";
+          return '<div class="t-row"><span><i style="background:' + x.color + '"></i>' + x.label + "（" + d.s[x.key] + "/5" + (x.key === "pay" ? ({ estimate: "・推定", none: "・データなし" })[payInfo(d.c).kind] || "" : "") + "）</span><span>+" + d.parts[k].toFixed(1) + "</span></div>";
         }).join("");
       g.addEventListener("mouseenter", function (e) { showTip(html, e); });
       g.addEventListener("mousemove", moveTip);
@@ -174,7 +189,7 @@
       '<th class="num">合計</th></tr></thead><tbody>' +
       data.map(function (d, i) {
         return "<tr><td>" + (i + 1) + "</td><td>" + esc(d.c.name) + "</td>" +
-          AXES.map(function (x) { return '<td class="num">' + d.s[x.key] + "</td>"; }).join("") +
+          AXES.map(function (x) { return '<td class="num">' + d.s[x.key] + (x.key === "pay" && payInfo(d.c).kind !== "data" ? "*" : "") + "</td>"; }).join("") +
           '<td class="num"><strong>' + Math.round(d.total) + "</strong></td></tr>";
       }).join("") + "</tbody></table>";
   }
@@ -196,7 +211,7 @@
     data.forEach(function (c, i) {
       var y = top + i * rowH, by = y + (rowH - barH) / 2, w = sx(c.avgSalary.value), r = 4;
       svg.push('<g class="row" data-i="' + i + '"><rect class="hit" x="0" y="' + y + '" width="' + W + '" height="' + rowH + '" rx="4"/>');
-      svg.push('<text x="' + (labelW - 8) + '" y="' + (y + rowH / 2 + 4) + '" text-anchor="end">' + esc(narrow ? shortName(c.name) : c.name) + "</text>");
+      svg.push('<text x="' + (labelW - 8) + '" y="' + (y + rowH / 2 + 4) + '" text-anchor="end">' + esc(narrow || c.name.length > 10 ? shortName(c.name) : c.name) + "</text>");
       svg.push('<path d="M' + labelW + "," + by + "h" + (w - r) + "a" + r + "," + r + " 0 0 1 " + r + "," + r + "v" + (barH - 2 * r) + "a" + r + "," + r + " 0 0 1 -" + r + "," + r + "h-" + (w - r) + 'z" style="fill:var(--series-1)"/>');
       svg.push('<text x="' + (labelW + w + 6) + '" y="' + (y + rowH / 2 + 4) + '">' + c.avgSalary.value.toLocaleString() + "万円</text></g>");
     });
@@ -217,6 +232,7 @@
   // ---------- compare table ----------
   var ROWS = [
     ["一言でいうと", function (c) { return esc(c.oneLiner); }],
+    ["本社・勤務地", function (c) { return esc(c.region || "要確認"); }],
     ["業界・事業", function (c) { return '<span class="badge type">' + esc(c.type) + "</span>" + esc(c.business); }],
     ["売上・規模", function (c) { return field(c.revenue) + '<br><small>' + esc(c.revenue && c.revenue.fy) + "</small>"; }],
     ["従業員数", function (c) { return field(c.employees); }],
