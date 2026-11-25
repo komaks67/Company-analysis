@@ -9,8 +9,10 @@
 //   どちらもない場合は payEstimate.score（推定）を使い、それもなければ3点。
 //wlb / flex / future は
 //   集めた事実をもとにした「目安の評価」で、reasons に根拠を書く。
+// metrics: グラフ用の数値（overtimeH=月の残業時間, leaveDays=有給の平均取得日数,
+//   leaveRate=有給取得率%, maleParentalPct=男性育休取得率%）。出典は各項目の src と同じ。
 // =====================================================================
-window.DATA_UPDATED = "2026-11-24";
+window.DATA_UPDATED = "2026-11-25";
 
 window.COMPANIES = [
   {
@@ -101,7 +103,8 @@ window.COMPANIES = [
         "label": "公式：福利厚生",
         "url": "https://www.lycorp.co.jp/ja/recruit/workplace/benefits/"
       }
-    ]
+    ],
+    "metrics": {}
   },
   {
     "id": "rakuten",
@@ -191,7 +194,12 @@ window.COMPANIES = [
         "label": "公式：ウェルネス",
         "url": "https://corp.rakuten.co.jp/sustainability/wellness/"
       }
-    ]
+    ],
+    "metrics": {
+      "leaveDays": 13.3,
+      "leaveRate": 82.4,
+      "maleParentalPct": 69.1
+    }
   },
   {
     "id": "mercari",
@@ -279,7 +287,8 @@ window.COMPANIES = [
         "label": "平均年収 2025年6月期（LIMO）",
         "url": "https://limo.media/articles/-/7522"
       }
-    ]
+    ],
+    "metrics": {}
   },
   {
     "id": "cyberagent",
@@ -371,7 +380,10 @@ window.COMPANIES = [
         "label": "平均年収の解説",
         "url": "https://talentsquare.co.jp/career/cyber-agent-salary/"
       }
-    ]
+    ],
+    "metrics": {
+      "startingNote": "固定残業代（80時間分）込み"
+    }
   },
   {
     "id": "dena",
@@ -463,7 +475,10 @@ window.COMPANIES = [
         "label": "平均年収",
         "url": "https://gurafu.net/jpn/dena"
       }
-    ]
+    ],
+    "metrics": {
+      "startingNote": "年俸600万円÷12（賞与込み）"
+    }
   },
   {
     "id": "nttdata",
@@ -554,7 +569,10 @@ window.COMPANIES = [
         "label": "上場廃止（JPX）",
         "url": "https://www.jpx.co.jp/news/1023/20250829-12.html"
       }
-    ]
+    ],
+    "metrics": {
+      "maleParentalPct": 103.1
+    }
   },
   {
     "id": "nri",
@@ -646,7 +664,12 @@ window.COMPANIES = [
         "label": "平均年収の推移",
         "url": "https://the-shashi.com/tse/4307/workforce/"
       }
-    ]
+    ],
+    "metrics": {
+      "overtimeH": 5.1,
+      "leaveRate": 73.4,
+      "overtimeNote": "裁量労働でない若手のみ"
+    }
   },
   {
     "id": "fujitsu",
@@ -737,7 +760,10 @@ window.COMPANIES = [
         "label": "厚労省：テレワーク事例",
         "url": "https://telework.mhlw.go.jp/wp/wp-content/uploads/2022/09/tw-fujitsu.pdf"
       }
-    ]
+    ],
+    "metrics": {
+      "maleParentalPct": 94.1
+    }
   },
   {
     "id": "nec",
@@ -827,7 +853,10 @@ window.COMPANIES = [
         "label": "平均年収（LIMO）",
         "url": "https://limo.media/articles/-/147281"
       }
-    ]
+    ],
+    "metrics": {
+      "maleParentalPct": 50.6
+    }
   },
   {
     "id": "tisi",
@@ -918,7 +947,8 @@ window.COMPANIES = [
         "label": "平均年収の解説",
         "url": "https://talentsquare.co.jp/career/tis-salary/"
       }
-    ]
+    ],
+    "metrics": {}
   },
   {
     "id": "tads",
@@ -1018,7 +1048,11 @@ window.COMPANIES = [
         "url": "https://www.openwork.jp/company.php?m_id=a0C1000000V5JsZ"
       }
     ],
-    "startingMonthly": 25.65
+    "startingMonthly": 25.65,
+    "metrics": {
+      "overtimeH": 18.8,
+      "leaveDays": 13.7
+    }
   },
   {
     "id": "hba",
@@ -1106,7 +1140,12 @@ window.COMPANIES = [
         "label": "doda 求人",
         "url": "https://doda.jp/DodaFront/View/CompanyJobs/j_id__00011842581/"
       }
-    ]
+    ],
+    "metrics": {
+      "overtimeH": 19,
+      "leaveDays": 17.4,
+      "maleParentalPct": 76.9
+    }
   },
   {
     "id": "nttdata-hokkaido",
@@ -1198,7 +1237,13 @@ window.COMPANIES = [
         "url": "https://en-ambi.com/job/j-16015298/"
       }
     ],
-    "startingMonthly": 23.79
+    "startingMonthly": 23.79,
+    "metrics": {
+      "overtimeH": 25.6,
+      "leaveDays": 21.5,
+      "maleParentalPct": 66.7,
+      "leaveNote": "夏季休暇5日を含む"
+    }
   },
   {
     "id": "tis-hokkaido",
@@ -1284,7 +1329,11 @@ window.COMPANIES = [
         "label": "マイナビ転職 求人（リモート・休暇）",
         "url": "https://tenshoku.mynavi.jp/jobinfo-332443-4-6-1/"
       }
-    ]
+    ],
+    "metrics": {
+      "overtimeH": 11,
+      "overtimeNote": "求人の「10〜12時間」の中間"
+    }
   },
   {
     "id": "hotnet",
@@ -1377,7 +1426,10 @@ window.COMPANIES = [
         "url": "https://www.openwork.jp/company.php?m_id=a0C1000000sj0Sl"
       }
     ],
-    "startingMonthly": 22.23
+    "startingMonthly": 22.23,
+    "metrics": {
+      "overtimeH": 19.5
+    }
   },
   {
     "id": "jigsaw",
@@ -1469,7 +1521,11 @@ window.COMPANIES = [
         "label": "マイナビエージェント 企業ページ",
         "url": "https://mynavi-agent.jp/corpdetail/3998"
       }
-    ]
+    ],
+    "metrics": {
+      "overtimeH": 23.9,
+      "leaveDays": 10.1
+    }
   },
   {
     "id": "ecomott",
@@ -1568,7 +1624,12 @@ window.COMPANIES = [
         "url": "https://www.nikkei.com/nkd/company/salary/?scode=3987"
       }
     ],
-    "startingMonthly": 20.8
+    "startingMonthly": 20.8,
+    "metrics": {
+      "overtimeH": 10,
+      "leaveDays": 11.4,
+      "startingNote": "固定残業代（10時間分）込み"
+    }
   },
   {
     "id": "infiniteloop",
@@ -1656,7 +1717,8 @@ window.COMPANIES = [
         "url": "https://directscout.recruit.co.jp/job_descriptions/2790500"
       }
     ],
-    "startingMonthly": 25.06
+    "startingMonthly": 25.06,
+    "metrics": {}
   },
   {
     "id": "crypton",
@@ -1746,7 +1808,12 @@ window.COMPANIES = [
         "url": "https://www.openwork.jp/company.php?m_id=a0910000000G12B"
       }
     ],
-    "startingMonthly": 23.8
+    "startingMonthly": 23.8,
+    "metrics": {
+      "overtimeH": 9.8,
+      "leaveDays": 11.7,
+      "leaveRate": 66.1
+    }
   },
   {
     "id": "awl",
@@ -1824,6 +1891,7 @@ window.COMPANIES = [
         "label": "北大向け会社紹介（PDF）",
         "url": "https://awl.co.jp/wp-content/uploads/2022/10/Hokkaido-Univ-Career-Handbook-2023-AWL.pdf"
       }
-    ]
+    ],
+    "metrics": {}
   }
 ];

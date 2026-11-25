@@ -15,8 +15,8 @@
   // ---------- helpers ----------
   function shortName(n) {
     return ({ "サイバーエージェント": "サイバーA", "野村総合研究所": "野村総研", "楽天グループ": "楽天", "TISI（旧TIS）": "TISI",
-      "つうけんアドバンスシステムズ": "つうけんAS", "NTTデータ北海道": "NTTデータ北海道", "北海道総合通信網（HOTnet）": "HOTnet",
-      "クリプトン・フューチャー・メディア": "クリプトン", "インフィニットループ": "インフィニットL" })[n] || n;
+      "つうけんアドバンスシステムズ": "つうけんAS", "北海道総合通信網（HOTnet）": "HOTnet",
+      "クリプトン・フューチャー・メディア": "クリプトン", "インフィニットループ": "インフィニットL", "NTTデータ北海道": "NTTD北海道" })[n] || n;
   }
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
@@ -126,6 +126,7 @@
   function wordFor(v) { return ["気にしない", "少し", "やや重視", "普通", "重視", "最重視"][v] || ""; }
 
   // ---------- ranking chart ----------
+  function notify() { document.dispatchEvent(new CustomEvent("cc:update")); }
   function renderRank() {
     var data = ranked();
     document.getElementById("rankLegend").innerHTML = AXES.map(function (x) {
@@ -192,41 +193,7 @@
           AXES.map(function (x) { return '<td class="num">' + d.s[x.key] + (x.key === "pay" && payInfo(d.c).kind !== "data" ? "*" : "") + "</td>"; }).join("") +
           '<td class="num"><strong>' + Math.round(d.total) + "</strong></td></tr>";
       }).join("") + "</tbody></table>";
-  }
-
-  // ---------- salary chart ----------
-  function renderSalary() {
-    var data = visible().filter(function (c) { return c.avgSalary && typeof c.avgSalary.value === "number"; })
-      .sort(function (a, b) { return b.avgSalary.value - a.avgSalary.value; });
-    var host = document.getElementById("salaryChart");
-    var W = Math.max(320, host.clientWidth || 760), narrow = W < 560, labelW = narrow ? 104 : 150, rightPad = 70, rowH = 30, barH = 18, top = 22;
-    var H = top + data.length * rowH + 6, plotW = W - labelW - rightPad, max = 1500;
-    var sx = function (v) { return v / max * plotW; };
-    var svg = ['<svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="平均年収の比較">'];
-    (narrow ? [0, 500, 1000, 1500] : [0, 500, 1000, 1500]).forEach(function (t) {
-      var x = labelW + sx(t);
-      svg.push('<line class="gridline" x1="' + x + '" x2="' + x + '" y1="' + (top - 4) + '" y2="' + (H - 4) + '"/>');
-      svg.push('<text class="axis" x="' + x + '" y="12" text-anchor="middle">' + t + (narrow ? "" : "万円") + "</text>");
-    });
-    data.forEach(function (c, i) {
-      var y = top + i * rowH, by = y + (rowH - barH) / 2, w = sx(c.avgSalary.value), r = 4;
-      svg.push('<g class="row" data-i="' + i + '"><rect class="hit" x="0" y="' + y + '" width="' + W + '" height="' + rowH + '" rx="4"/>');
-      svg.push('<text x="' + (labelW - 8) + '" y="' + (y + rowH / 2 + 4) + '" text-anchor="end">' + esc(narrow || c.name.length > 10 ? shortName(c.name) : c.name) + "</text>");
-      svg.push('<path d="M' + labelW + "," + by + "h" + (w - r) + "a" + r + "," + r + " 0 0 1 " + r + "," + r + "v" + (barH - 2 * r) + "a" + r + "," + r + " 0 0 1 -" + r + "," + r + "h-" + (w - r) + 'z" style="fill:var(--series-1)"/>');
-      svg.push('<text x="' + (labelW + w + 6) + '" y="' + (y + rowH / 2 + 4) + '">' + c.avgSalary.value.toLocaleString() + "万円</text></g>");
-    });
-    svg.push("</svg>");
-    host.innerHTML = svg.join("");
-    host.querySelectorAll(".row").forEach(function (g) {
-      var c = data[Number(g.getAttribute("data-i"))];
-      var html = '<div class="t-title">' + esc(c.name) + "</div>" +
-        '<div class="t-row"><span>平均年収</span><span>' + c.avgSalary.value.toLocaleString() + "万円</span></div>" +
-        '<div class="t-row"><span>平均年齢</span><span>' + esc(c.avgSalary.age) + "</span></div>" +
-        '<div class="t-row"><span>対象</span><span>' + esc(c.avgSalary.fy) + "</span></div>";
-      g.addEventListener("mouseenter", function (e) { showTip(html, e); });
-      g.addEventListener("mousemove", moveTip);
-      g.addEventListener("mouseleave", hideTip);
-    });
+    notify();
   }
 
   // ---------- compare table ----------
@@ -280,6 +247,7 @@
       ROWS.map(function (r) {
         return '<tr><th scope="row">' + r[0] + "</th>" + sel.map(function (c) { return "<td>" + r[1](c) + "</td>"; }).join("") + "</tr>";
       }).join("") + "</tbody></table>";
+    notify();
   }
 
   // ---------- details & memo ----------
@@ -335,7 +303,7 @@
     b.addEventListener("click", function () {
       typeFilter = b.getAttribute("data-type");
       document.querySelectorAll("#typeFilter button").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
-      renderRank(); renderSalary();
+      renderRank();
     });
   });
   document.getElementById("resetWeights").addEventListener("click", function () {
@@ -346,6 +314,12 @@
     t.hidden = !open; e.target.setAttribute("aria-expanded", String(open)); e.target.textContent = open ? "表を閉じる" : "表で見る";
   });
 
-  var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { renderRank(); renderSalary(); }, 150); });
-  renderWeights(); renderRank(); renderSalary(); renderPicker(); renderCompare(); renderDetails();
+  var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { renderRank(); }, 150); });
+  window.CC = {
+    visible: visible, ranked: ranked, scoresOf: scoresOf, payInfo: payInfo, esc: esc, AXES: AXES,
+    showTip: showTip, moveTip: moveTip, hideTip: hideTip, shortName: shortName, badge: badge,
+    getPicks: function () { return picks.slice(); }, companies: COMPANIES,
+    openDetail: function (id) { var el = document.getElementById("detail-" + id); if (el) { el.open = true; el.scrollIntoView({ behavior: "smooth", block: "start" }); } }
+  };
+  renderWeights(); renderRank(); renderPicker(); renderCompare(); renderDetails();
 })();

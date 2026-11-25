@@ -17,7 +17,11 @@
   </div>
 </header>
 
+<nav class="jump" aria-label="ページ内の移動"><div class="wrap">
+  <a href="#h-weights">重視項目</a><a href="#h-rank">ランキング</a><a href="#h-heat">スコア一覧</a><a href="#h-metric">数字で比べる</a><a href="#h-compare">比較表</a><a href="#h-coverage">データの充実度</a><a href="#h-detail">各社の詳細</a>
+</div></nav>
 <main class="wrap">
+  <section class="kpis" id="kpis" aria-label="全体の数字"></section>
   <!-- 重視項目 -->
   <section class="panel" aria-labelledby="h-weights">
     <h2 id="h-weights">① 何を重視する？（スライダーで調整）</h2>
@@ -49,17 +53,32 @@
     <p class="note">※「年収」は平均年収・初任給から自動で点数化。「働きやすさ・柔軟さ・将来性」は集めた事実をもとにした<strong>目安の評価</strong>です（根拠は各社の詳細に記載）。データ不足の項目は中間点（3点）にしています。年収は「平均年収」と「初任給」から計算し、どちらも非公開の会社は求人情報からの<strong>推定</strong>です（表の * 印）。</p>
   </section>
 
-  <!-- 平均年収グラフ -->
-  <section class="panel" aria-labelledby="h-salary">
-    <h2 id="h-salary">③ 平均年収（有価証券報告書ベース）</h2>
-    <div id="salaryChart" class="chart"></div>
-    <p class="note">※会社全体の平均（主に単体）。<strong>平均年齢や対象範囲が会社ごとに違う</strong>ので、そのまま「入社後の年収」とは比べられません。NTTデータは持株会社の数字です。非上場の会社は平均年収が公開されていないため、グラフに出ていません。</p>
+  <!-- スコア一覧 -->
+  <section class="panel" aria-labelledby="h-heat">
+    <h2 id="h-heat">③ スコア一覧（色が濃いほど高評価）</h2>
+    <p class="hint">見出しを押すと並べ替えられます。会社名を押すと詳細に移動します。</p>
+    <div id="heatTable" class="table-scroll"></div>
+    <p class="note" id="heatLegend"></p>
+  </section>
+
+  <!-- 指標グラフ -->
+  <section class="panel" aria-labelledby="h-metric">
+    <h2 id="h-metric">④ 数字で比べる</h2>
+    <div class="seg seg-wrap" role="group" aria-label="比べる数字" id="metricTabs"></div>
+    <div class="legend" id="metricMeta"></div>
+    <div id="metricChart" class="chart"></div>
+    <p class="note" id="metricNote"></p>
   </section>
 
   <!-- 比較表 -->
   <section class="panel" aria-labelledby="h-compare">
-    <h2 id="h-compare">④ 項目ごとに比較（最大4社を選択）</h2>
+    <h2 id="h-compare">⑤ 項目ごとに比較（最大4社を選択）</h2>
     <div id="picker" class="picker"></div>
+    <div class="radar-wrap">
+      <div id="radar" class="chart radar"></div>
+      <div><h3 class="sub-h">スコアの形で比べる</h3><div class="legend legend-col" id="radarLegend"></div>
+      <p class="note">外側に広がるほど高評価です。点にふれると点数が出ます。</p></div>
+    </div>
     <div id="compareTable" class="table-scroll"></div>
     <div class="badges-legend">
       <span class="badge official">公式</span>会社の公式資料・決算書で確認
@@ -68,9 +87,16 @@
     </div>
   </section>
 
+  <!-- データの充実度 -->
+  <section class="panel" aria-labelledby="h-coverage">
+    <h2 id="h-coverage">⑥ データの充実度（どこまで調べられたか）</h2>
+    <p class="hint"><span class="cov-k official">●</span> 公式資料で確認　<span class="cov-k secondary">○</span> 報道・求人・口コミなどで確認　<span class="cov-k unknown">×</span> 見つからない（説明会で聞くのがおすすめ）</p>
+    <div id="coverage" class="table-scroll"></div>
+  </section>
+
   <!-- 各社詳細 -->
   <section class="panel" aria-labelledby="h-detail">
-    <h2 id="h-detail">⑤ 各社の詳細・自分用メモ</h2>
+    <h2 id="h-detail">⑦ 各社の詳細・自分用メモ</h2>
     <p class="hint">メモはこのブラウザだけに保存され、他の人には見えません（別の端末とは共有されません）。</p>
     <div id="details"></div>
   </section>
@@ -92,5 +118,6 @@
 </div>
 <script src="data/companies.js"></script>
 <script src="app.js"></script>
+<script src="extras.js"></script>
 </body>
 </html>
