@@ -295,7 +295,7 @@
       }).join("");
       return '<details class="company" id="detail-' + esc(c.id) + '"><summary><span>' + esc(c.name) +
         ' <span class="sub">（' + esc(c.type) + "）" + esc(c.oneLiner) + '</span></span><span class="sub" id="st-label-' + esc(c.id) + '"></span></summary>' +
-        '<div class="company-body">' +
+        '<div class="company-body">' + (c.deepDive ? '<p class="deep-link"><a href="' + esc(c.deepDive) + '">この会社の徹底調査ページを見る →</a></p>' : "") +
         "<h3>給与・評価制度</h3><dl><dt>給与の仕組み</dt><dd>" + esc(c.payStructure) + "</dd><dt>初任給</dt><dd>" + field(c.startingSalary) + "</dd><dt>学歴別の初任給</dt><dd>" + eduTable(c, false) + "</dd></dl>" +
         "<h3>福利厚生・働きやすさ</h3><dl><dt>住宅</dt><dd>" + field(c.housing) + "</dd><dt>男性育休取得率</dt><dd>" + field(c.maleParental) + "</dd><dt>有給取得率</dt><dd>" + field(c.paidLeave) + "</dd><dt>その他</dt><dd>" + esc(c.benefits) + "</dd><dt>副業</dt><dd>" + field(c.sideJob) + "</dd></dl>" +
         "<h3>事業の将来性・安定性</h3><dl><dt>強み</dt><dd>" + esc(c.strengths) + "</dd><dt>注力分野</dt><dd>" + esc(c.newAreas) + "</dd><dt>注意点・リスク</dt><dd>" + esc(c.risks) + "</dd></dl>" +

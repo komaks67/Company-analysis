@@ -1177,22 +1177,22 @@ window.COMPANIES = [
     "name": "つうけんアドバンスシステムズ",
     "type": "SIer",
     "region": "北海道（札幌）",
-    "oneLiner": "コムシス系の道内SIer",
-    "business": "ソフトウェア開発、ITインフラ構築、機器販売（リセール）、アウトソーシング、運用監視（MSP）。2010年からコムシスホールディングスのグループ",
+    "oneLiner": "コムシス系・札幌本社のSIer",
+    "business": "ソフトウェア開発、ネットワーク・サーバ構築（SI/NI）、24時間365日の運用監視（MSP）、回線・機器の販売（リセール）、アウトソーシング。顧客はNTTグループ各社・自治体（札幌市ほか）・一般企業など",
     "revenue": {
-      "text": "年商 約132億円（掲載時点は不明）",
-      "fy": "時点不明",
-      "conf": "secondary",
-      "src": "https://www.tsr-net.co.jp/alevel/detail/1200114_2071.html"
+      "text": "売上高 142億円（2025年度）。2024年度は132億円、2022年度に100億円を突破",
+      "fy": "2025年度",
+      "conf": "official",
+      "src": "https://www.tads.co.jp/company/profile/index.html"
     },
     "employees": {
-      "text": "443名（掲載時点は不明）",
-      "conf": "secondary",
-      "src": "https://www.tsr-net.co.jp/alevel/detail/1200114_2071.html"
+      "text": "443名（2026年4月）。平均年齢39.1歳・平均勤続14.6年",
+      "conf": "official",
+      "src": "https://www.tads.co.jp/company/profile/index.html"
     },
     "avgSalary": null,
     "startingSalary": {
-      "text": "大学卒 月25.65万円（一律の育成手当1万円＝残業4.8時間分を含む。入社後3年間支給）※2027年3月卒向け",
+      "text": "大学卒 月25.65万円／大学院修了 月26.25万円／高専・専門・短大卒 月25.05万円以上（2026年4月時点。入社後3年間の一律の育成手当1万円を含む）",
       "conf": "official",
       "src": "https://www.tads.co.jp/recruit/newgrads/recruitinfo/index.html"
     },
@@ -1207,9 +1207,9 @@ window.COMPANIES = [
       "src": "https://www.tads.co.jp/recruit/recruitinfo/#career"
     },
     "maleParental": {
-      "text": "男女とも育休の取得実績あり（率は非公開。口コミ集計では男性33.3%）",
+      "text": "60.0%（2025年度：対象5名中3名が取得）。2024年度は33.3%",
       "conf": "secondary",
-      "src": "https://www.openwork.jp/company.php?m_id=a0C1000000V5JsZ"
+      "src": "https://job.mynavi.jp/28/pc/search/corp104391/outline.html"
     },
     "remote": {
       "text": "テレワークあり（中途求人で「在宅勤務率40%」「社員の7割がテレワーク」と記載。札幌での自社内開発が9割）",
@@ -1217,53 +1217,46 @@ window.COMPANIES = [
       "src": "https://tenshoku.mynavi.jp/jobinfo-153423-4-2-1/"
     },
     "housing": {
-      "text": "要確認",
-      "conf": "unknown"
+      "text": "住宅手当・社宅制度・住宅融資制度あり（公式）。口コミでは「札幌勤務は住宅補助なし、東京勤務はあり」との声も。金額は要確認",
+      "conf": "official",
+      "src": "https://www.tads.co.jp/recruit/recruitinfo/#career"
     },
     "sideJob": {
-      "text": "要確認",
+      "text": "公開された規定なし（要確認）",
       "conf": "unknown"
     },
-    "benefits": "年間休日124日（新卒向け案内）、育成手当（入社後3年間、月1万円）",
-    "culture": "（推測）通信建設グループの一員として、安定志向で堅実。札幌での自社内開発が中心",
-    "payStructure": "新卒は一律の育成手当込み。中途のモデル年収：26歳500万円、32歳587万円",
-    "strengths": "NTT系の通信工事会社「つうけん」とコムシスグループの基盤、ネットワークからソフトまでまとめて対応できる",
-    "newAreas": "運用監視サービス（MSP）、クラウドなどITインフラ",
-    "risks": "非上場で公開データが少ない。親会社グループの方針に左右される",
+    "benefits": "年間休日124日以上、GW・夏季・冬季特別休暇、リフレッシュ休暇、会員制福利厚生サービス、資格受験費用の会社負担と合格一時金、在宅勤務手当、東京勤務手当",
+    "culture": "（口コミ）手を挙げれば挑戦させてもらえる、研修が充実、という声がある一方、「IT企業としては社風が古い」「年功序列的」という声も",
+    "payStructure": "職能資格制度で年1回昇給（減給もあり）。賞与は年2回（6月・12月）。口コミでは夏3〜4.5カ月（評価・業績で変動）、冬2カ月",
+    "strengths": "NTTグループや自治体との長い取引、ネットワークからソフト・運用監視までまとめて対応できる。親会社コムシスグループは過去最高益",
+    "newAreas": "運用監視（MSP）、クラウドなどITインフラ。2025年7月からコムシス情報システムの子会社としてグループのIT事業を拡大",
+    "risks": "親会社の方針に左右される。評価制度は年功的との口コミ。札幌勤務は住宅補助がない可能性。女性管理職4.2%と低め",
     "scores": {
       "wlb": 3.5,
       "flex": 4,
-      "future": 3.5
+      "future": 4
     },
     "reasons": {
       "wlb": "残業 月18.8時間、有給 平均13.7日、年間休日124日のため3.5",
       "flex": "在宅勤務率40%〜テレワーク7割（求人）と、在宅勤務がよく使われているため4",
-      "future": "コムシスグループで安定。成長性の公開データは少ないため3.5"
+      "future": "売上が100億円（2022年度）→142億円（2025年度）と伸び、親会社コムシスHDも過去最高益のため4"
     },
     "sources": [
+      {
+        "label": "公式：会社概要",
+        "url": "https://www.tads.co.jp/company/profile/index.html"
+      },
       {
         "label": "公式：新卒 募集要項",
         "url": "https://www.tads.co.jp/recruit/newgrads/recruitinfo/index.html"
       },
       {
-        "label": "公式：採用情報（残業・有給の実績）",
+        "label": "公式：採用情報（実績）",
         "url": "https://www.tads.co.jp/recruit/recruitinfo/#career"
       },
       {
-        "label": "東京商工リサーチ 企業情報",
-        "url": "https://www.tsr-net.co.jp/alevel/detail/1200114_2071.html"
-      },
-      {
-        "label": "マイナビ転職 企業ページ",
-        "url": "https://tenshoku.mynavi.jp/company/153423/"
-      },
-      {
-        "label": "公式サイト",
-        "url": "https://www.tads.co.jp/"
-      },
-      {
-        "label": "マイナビ転職 求人（テレワーク）",
-        "url": "https://tenshoku.mynavi.jp/jobinfo-153423-4-2-1/"
+        "label": "マイナビ2028",
+        "url": "https://job.mynavi.jp/28/pc/search/corp104391/outline.html"
       },
       {
         "label": "OpenWork",
@@ -1273,23 +1266,25 @@ window.COMPANIES = [
     "startingMonthly": 25.65,
     "metrics": {
       "overtimeH": 18.8,
-      "leaveDays": 13.7
+      "leaveDays": 13.7,
+      "maleParentalPct": 60
     },
     "salaryByEdu": {
-      "note": "大学卒は公式の2027年卒向け募集要項。その他の学歴は東京商工リサーチ掲載値（大学卒の額が公式と一致）。専門3年卒は月25.35万円。専門4年卒の区分は記載なし",
-      "src": "https://www.tsr-net.co.jp/alevel/detail/1200114_2071.html",
-      "conf": "secondary",
+      "note": "2026年4月時点（公式）。入社後3年間の育成手当1万円を含む。専門4年卒の区分は記載なし",
+      "src": "https://www.tads.co.jp/recruit/newgrads/recruitinfo/index.html",
+      "conf": "official",
       "s2": {
         "status": "ok",
         "v": 25.05,
-        "note": "短大・専門2年卒。専門3年卒は月25.35万円"
+        "note": "高専・専門・短大卒（以上）。古い掲載では専門3年卒は月25.35万円"
       },
       "s4": {
         "status": "unknown"
       },
       "kosen": {
         "status": "ok",
-        "v": 25.15
+        "v": 25.05,
+        "note": "高専・専門・短大卒（以上）"
       },
       "univ": {
         "status": "ok",
@@ -1300,7 +1295,8 @@ window.COMPANIES = [
         "status": "ok",
         "v": 26.25
       }
-    }
+    },
+    "deepDive": "tads.html"
   },
   {
     "id": "hba",
