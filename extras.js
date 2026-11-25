@@ -216,9 +216,55 @@
       }).join("") + "</tbody></table>";
   }
 
+
+  // ===================== 強み・注意点の早見表（各社の詳細） =====================
+  function quickPoints(c) {
+    var s = CC.scoresOf(c), m = c.metrics || {}, pi = CC.payInfo(c);
+    var good = [], warn = [];
+    // 数字から自動で判定（しきい値は下のとおり）
+    if (typeof c.startingMonthly === "number" && !m.startingNote && c.startingMonthly >= 30) good.push("初任給が高め（月" + c.startingMonthly + "万円）");
+    if (typeof c.startingMonthly === "number" && c.startingMonthly < 23) warn.push("初任給が低め（月" + c.startingMonthly + "万円" + (m.startingNote ? "・" + m.startingNote : "") + "）");
+    if (m.startingNote) warn.push("初任給は" + m.startingNote + "のため、他社と単純に比べにくい");
+    if (c.avgSalary && c.avgSalary.value >= 1000) good.push("平均年収が高い（" + c.avgSalary.value.toLocaleString() + "万円）");
+    if (c.avgSalary && c.avgSalary.value < 700) warn.push("平均年収は低め（" + c.avgSalary.value.toLocaleString() + "万円）");
+    if (typeof m.overtimeH === "number" && m.overtimeH <= 12) good.push("残業が少ない（月" + m.overtimeH + "時間" + (m.overtimeNote ? "・" + m.overtimeNote : "") + "）");
+    if (typeof m.overtimeH === "number" && m.overtimeH >= 23) warn.push("残業はやや多め（月" + m.overtimeH + "時間）");
+    if (typeof m.leaveDays === "number" && m.leaveDays >= 15) good.push("有給を多く取れている（年" + m.leaveDays + "日）");
+    if (typeof m.leaveDays === "number" && m.leaveDays <= 11.5) warn.push("有給の取得は少なめ（年" + m.leaveDays + "日）");
+    if (typeof m.leaveRate === "number" && m.leaveRate >= 80) good.push("有給取得率が高い（" + m.leaveRate + "%）");
+    if (typeof m.maleParentalPct === "number" && m.maleParentalPct >= 70) good.push("男性も育休を取りやすい（取得率" + m.maleParentalPct + "%）");
+    if (typeof m.maleParentalPct === "number" && m.maleParentalPct < 55) warn.push("男性の育休取得率はまだ低め（" + m.maleParentalPct + "%）");
+    if (s.flex >= 4) good.push("在宅勤務など柔軟に働ける");
+    if (s.flex <= 2.5) warn.push("出社が中心");
+    if (s.future >= 4.5) good.push("業績が伸びている");
+    if (s.future <= 2.5) warn.push("直近の業績が落ちている・赤字");
+    if (pi.kind !== "data") warn.push(pi.kind === "estimate" ? "年収は求人情報からの推定" : "年収・初任給のデータがない");
+    var unknown = ["startingSalary", "overtime", "paidLeave", "maleParental", "remote", "housing", "sideJob"].filter(function (k) { return !c[k] || c[k].conf === "unknown"; }).length;
+    if (unknown >= 5) warn.push("公開データが少ない（7項目中" + unknown + "項目が不明）");
+    return { good: good, warn: warn, unknown: unknown };
+  }
+  function renderQuick() {
+    CC.companies.forEach(function (c) {
+      var body = document.querySelector("#detail-" + c.id + " .company-body");
+      if (!body || body.querySelector(".quick")) return;
+      var q = quickPoints(c);
+      var li = function (arr) { return arr.length ? "<ul>" + arr.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul>" : ""; };
+      var div = document.createElement("div");
+      div.className = "quick";
+      div.innerHTML = '<h3>強み・注意点の早見表</h3><div class="quick-grid">' +
+        '<div class="quick-col good"><div class="quick-h"><span class="qi" aria-hidden="true">✓</span>強み</div>' +
+        '<p class="quick-main">' + esc(c.strengths) + '</p>' + li(q.good) + "</div>" +
+        '<div class="quick-col warn"><div class="quick-h"><span class="qi" aria-hidden="true">!</span>注意点</div>' +
+        '<p class="quick-main">' + esc(c.risks) + '</p>' + li(q.warn) + "</div></div>" +
+        '<p class="note">太字の文は調べた内容のまとめ、箇条書きは数字から自動で判定したものです。</p>';
+      body.insertBefore(div, body.firstChild);
+    });
+  }
+
   function renderAll() { renderKpis(); renderHeat(); renderMetric(); renderRadar(); renderCoverage(); }
   document.addEventListener("cc:update", function () { renderHeat(); renderMetric(); renderRadar(); renderCoverage(); });
   var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { renderMetric(); renderHeat(); }, 150); });
   renderMetricTabs();
   renderAll();
+  renderQuick();
 })();

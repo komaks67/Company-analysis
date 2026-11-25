@@ -213,3 +213,16 @@ button.sort { background: none; border: 0; font: inherit; font-weight: 700; colo
   .heat-table th:first-child, .heat-table td:first-child { display: none; }
   .heat-table th[scope=row] { max-width: 7.5em; white-space: normal; }
 }
+
+.quick { margin: 4px 0 8px; }
+.quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.quick-col { border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; }
+.quick-col.good { border-left: 4px solid var(--official); background: color-mix(in srgb, var(--official-bg) 45%, transparent); }
+.quick-col.warn { border-left: 4px solid var(--secondary); background: color-mix(in srgb, var(--secondary-bg) 45%, transparent); }
+.quick-h { font-weight: 700; display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+.qi { display: inline-flex; width: 20px; height: 20px; border-radius: 50%; align-items: center; justify-content: center; font-size: 12px; color: #fff; }
+.good .qi { background: var(--official); } .warn .qi { background: var(--secondary); }
+.quick-main { font-weight: 700; font-size: 14px; margin: 0 0 6px; }
+.quick ul { margin: 0; padding-left: 1.2em; font-size: 14px; }
+.quick li.none { color: var(--text-muted); list-style: none; margin-left: -1.2em; }
+@media (max-width: 600px) { .quick-grid { grid-template-columns: 1fr; } }
