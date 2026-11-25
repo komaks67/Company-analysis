@@ -47,11 +47,29 @@
   //  初任給（月額）：20万円→1点、32万円→5点（直線）
   //  両方あれば平均。どちらもなければ payEstimate（推定）、それもなければ3点
   function lin(v, lo, hi) { return Math.max(1, Math.min(5, 1 + (v - lo) / (hi - lo) * 4)); }
+  var EDU = [
+    { key: "s2", label: "専門卒（2・3年制）", short: "専門2・3年" },
+    { key: "s4", label: "専門卒（4年制）", short: "専門4年" },
+    { key: "kosen", label: "高専卒", short: "高専" },
+    { key: "univ", label: "大卒", short: "大卒" },
+    { key: "grad", label: "大学院卒", short: "院卒" }
+  ];
+  var edu = load("cc_edu_v1", "univ");
+  if (!EDU.some(function (e) { return e.key === edu; })) edu = "univ";
+  function eduLabel(k) { var e = EDU.filter(function (x) { return x.key === (k || edu); })[0]; return e ? e.label : ""; }
+  // 選んだ学歴の初任給 {status: ok/no/unknown, v, note}
+  function startingFor(c, k) {
+    var t = c.salaryByEdu && c.salaryByEdu[k || edu];
+    if (t) return t;
+    if ((k || edu) === "univ" && typeof c.startingMonthly === "number") return { status: "ok", v: c.startingMonthly };
+    return { status: "unknown" };
+  }
   function payInfo(c) {
     var parts = [], basis = [];
     var v = c.avgSalary && c.avgSalary.value;
     if (typeof v === "number") { parts.push(lin(v, 450, 1450)); basis.push("平均年収" + v.toLocaleString() + "万円"); }
-    if (typeof c.startingMonthly === "number") { parts.push(lin(c.startingMonthly, 20, 32)); basis.push("初任給 月" + c.startingMonthly + "万円"); }
+    var st = startingFor(c);
+    if (st.status === "ok" && typeof st.v === "number") { parts.push(lin(st.v, 20, 32)); basis.push(eduLabel() + "の初任給 月" + st.v + "万円"); }
     if (parts.length) {
       var avg = parts.reduce(function (a, b) { return a + b; }, 0) / parts.length;
       return { score: Math.round(avg * 10) / 10, kind: "data", text: basis.join("と") + "から自動計算" };
@@ -77,8 +95,11 @@
   var typeFilter = "all";
   var picks = load(LS.picks, null) || COMPANIES.slice(0, 3).map(function (c) { return c.id; });
 
+  function excluded() {
+    return COMPANIES.filter(function (c) { return startingFor(c).status === "no"; });
+  }
   function visible() {
-    return COMPANIES.filter(function (c) { return typeFilter === "all" || (typeFilter === "北海道" ? String(c.region || "").indexOf("北海道") === 0 : c.type === typeFilter); });
+    return COMPANIES.filter(function (c) { return startingFor(c).status !== "no" && (typeFilter === "all" || (typeFilter === "北海道" ? String(c.region || "").indexOf("北海道") === 0 : c.type === typeFilter)); });
   }
   function ranked() {
     var wsum = AXES.reduce(function (a, x) { return a + weights[x.key]; }, 0);
@@ -196,6 +217,19 @@
     notify();
   }
 
+  // ---------- 学歴別の初任給の表 ----------
+  function eduTable(c, compact) {
+    var t = c.salaryByEdu;
+    if (!t) return field(c.startingSalary);
+    var rows = EDU.map(function (e) {
+      var x = t[e.key] || { status: "unknown" };
+      var val = x.status === "ok" ? "<strong>" + x.v + "万円</strong>" : x.status === "no" ? '<span class="edu-no">対象外</span>' : '<span class="edu-un">不明</span>';
+      return '<tr class="' + (e.key === edu ? "edu-on" : "") + '"><th scope="row">' + (compact ? e.short : e.label) + "</th><td>" + val + (x.note && !compact ? '<small class="edu-note">' + esc(x.note) + "</small>" : "") + "</td></tr>";
+    }).join("");
+    return badge(t.conf) + srcLink(t.src) + '<table class="edu-table"><tbody>' + rows + "</tbody></table>" +
+      (t.note ? '<small class="edu-note">' + esc(t.note) + "</small>" : "");
+  }
+
   // ---------- compare table ----------
   var ROWS = [
     ["一言でいうと", function (c) { return esc(c.oneLiner); }],
@@ -207,7 +241,7 @@
       var a = c.avgSalary; if (!a) return field(null);
       return badge(a.conf) + "<strong>" + a.value.toLocaleString() + "万円</strong>（" + esc(a.age) + "）<br><small>" + esc(a.fy) + "</small>" + srcLink(a.src);
     }],
-    ["初任給", function (c) { return field(c.startingSalary); }],
+    ["初任給（学歴別）", function (c) { return eduTable(c, true); }],
     ["残業時間", function (c) { return field(c.overtime); }],
     ["有給取得率", function (c) { return field(c.paidLeave); }],
     ["男性育休取得率", function (c) { return field(c.maleParental); }],
@@ -262,7 +296,7 @@
       return '<details class="company" id="detail-' + esc(c.id) + '"><summary><span>' + esc(c.name) +
         ' <span class="sub">（' + esc(c.type) + "）" + esc(c.oneLiner) + '</span></span><span class="sub" id="st-label-' + esc(c.id) + '"></span></summary>' +
         '<div class="company-body">' +
-        "<h3>給与・評価制度</h3><dl><dt>給与の仕組み</dt><dd>" + esc(c.payStructure) + "</dd><dt>初任給</dt><dd>" + field(c.startingSalary) + "</dd></dl>" +
+        "<h3>給与・評価制度</h3><dl><dt>給与の仕組み</dt><dd>" + esc(c.payStructure) + "</dd><dt>初任給</dt><dd>" + field(c.startingSalary) + "</dd><dt>学歴別の初任給</dt><dd>" + eduTable(c, false) + "</dd></dl>" +
         "<h3>福利厚生・働きやすさ</h3><dl><dt>住宅</dt><dd>" + field(c.housing) + "</dd><dt>男性育休取得率</dt><dd>" + field(c.maleParental) + "</dd><dt>有給取得率</dt><dd>" + field(c.paidLeave) + "</dd><dt>その他</dt><dd>" + esc(c.benefits) + "</dd><dt>副業</dt><dd>" + field(c.sideJob) + "</dd></dl>" +
         "<h3>事業の将来性・安定性</h3><dl><dt>強み</dt><dd>" + esc(c.strengths) + "</dd><dt>注力分野</dt><dd>" + esc(c.newAreas) + "</dd><dt>注意点・リスク</dt><dd>" + esc(c.risks) + "</dd></dl>" +
         '<h3>スコアの根拠</h3><ul class="score-reasons"><li>年収 ' + s.pay + "：平均年収から自動計算（800万円=1点〜1,450万円=5点）</li>" +
@@ -315,11 +349,27 @@
   });
 
   var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { renderRank(); }, 150); });
+  function renderEdu() {
+    var sel = document.getElementById("eduSelect");
+    sel.innerHTML = EDU.map(function (e) { return '<option value="' + e.key + '"' + (e.key === edu ? " selected" : "") + ">" + e.label + "</option>"; }).join("");
+    sel.onchange = function () {
+      edu = sel.value; save("cc_edu_v1", edu);
+      renderEduNote(); renderDetails(); renderRank(); renderCompare();
+    };
+    renderEduNote();
+  }
+  function renderEduNote() {
+    var ex = excluded();
+    document.getElementById("eduNote").innerHTML = ex.length
+      ? "<strong>" + esc(eduLabel()) + "は応募対象外の会社（" + ex.length + "社）</strong>：" + ex.map(function (c) { return esc(c.name); }).join("、") + "。ランキングとグラフから外しています。"
+      : esc(eduLabel()) + "で比べています。初任給が不明な会社は、年収の点を平均年収（または推定）だけで計算します。";
+  }
   window.CC = {
+    edu: function () { return edu; }, eduLabel: eduLabel, EDU: EDU, startingFor: startingFor, excluded: excluded,
     visible: visible, ranked: ranked, scoresOf: scoresOf, payInfo: payInfo, esc: esc, AXES: AXES,
     showTip: showTip, moveTip: moveTip, hideTip: hideTip, shortName: shortName, badge: badge,
     getPicks: function () { return picks.slice(); }, companies: COMPANIES,
     openDetail: function (id) { var el = document.getElementById("detail-" + id); if (el) { el.open = true; el.scrollIntoView({ behavior: "smooth", block: "start" }); } }
   };
-  renderWeights(); renderRank(); renderPicker(); renderCompare(); renderDetails();
+  renderEdu(); renderWeights(); renderRank(); renderPicker(); renderCompare(); renderDetails();
 })();

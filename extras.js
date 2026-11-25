@@ -29,14 +29,14 @@
     var all = CC.companies;
     var tk = all.filter(function (c) { return !isHokkaido(c); }), hk = all.filter(isHokkaido);
     function med(list, f) { return median(list.map(f).filter(function (v) { return typeof v === "number"; })); }
-    var st = function (c) { return c.metrics && c.metrics.startingNote ? null : c.startingMonthly; };
+    var st = function (c) { var x = CC.startingFor(c); return c.metrics && c.metrics.startingNote ? null : (x.status === "ok" ? x.v : null); };
     var ot = function (c) { return c.metrics && c.metrics.overtimeH; };
     var fields = ["revenue", "employees", "startingSalary", "overtime", "paidLeave", "maleParental", "remote", "housing", "sideJob"];
     var total = 0, known = 0;
     all.forEach(function (c) { fields.forEach(function (k) { total++; if (c[k] && c[k].conf && c[k].conf !== "unknown") known++; }); });
     var tiles = [
       { k: "収録企業", v: all.length + "社", s: "東京本社 " + tk.length + "社・北海道 " + hk.length + "社" },
-      { k: "初任給（月額）の中央値", v: "東京 " + fmt(med(tk, st), 1) + "万円", s: "北海道 " + fmt(med(hk, st), 1) + "万円" },
+      { k: CC.eduLabel() + "の初任給（月額）中央値", v: "東京 " + fmt(med(tk, st), 1) + "万円", s: "北海道 " + fmt(med(hk, st), 1) + "万円" },
       { k: "残業（月）の中央値", v: "北海道 " + fmt(med(hk, ot), 1) + "時間", s: "東京はデータが少ないため参考外" },
       { k: "データが見つかった割合", v: Math.round(known / total * 100) + "%", s: "主要9項目×" + all.length + "社のうち" }
     ];
@@ -92,7 +92,7 @@
 
   // ===================== ④ 数字で比べる（指標を切り替える棒グラフ） =====================
   var METRICS = [
-    { key: "starting", label: "初任給（月額）", unit: "万円", d: 2, get: function (c) { return c.startingMonthly; }, note: function (c) { return c.metrics && c.metrics.startingNote; }, better: "高いほど良い", caption: "学部卒の初任給。手当込みの会社もあります。" },
+    { key: "starting", label: "初任給（月額）", unit: "万円", d: 2, get: function (c) { var x = CC.startingFor(c); return x.status === "ok" ? x.v : null; }, note: function (c) { return c.metrics && c.metrics.startingNote; }, better: "高いほど良い", caption: "" },
     { key: "salary", label: "平均年収", unit: "万円", d: 0, get: function (c) { return c.avgSalary && c.avgSalary.value; }, note: function (c) { return c.avgSalary && c.avgSalary.fy; }, better: "高いほど良い", caption: "全社員の平均（主に単体）。平均年齢が会社ごとに違うので注意。非上場の会社は公開されていません。" },
     { key: "overtime", label: "残業時間（月）", unit: "時間", d: 1, get: function (c) { return c.metrics && c.metrics.overtimeH; }, note: function (c) { return c.metrics && c.metrics.overtimeNote; }, better: "少ないほど良い", asc: true, caption: "会社が公表した月平均の残業時間（一部は求人情報）。" },
     { key: "leave", label: "有給の取得日数（年）", unit: "日", d: 1, get: function (c) { return c.metrics && c.metrics.leaveDays; }, note: function (c) { return c.metrics && c.metrics.leaveNote; }, better: "多いほど良い", caption: "1年間に実際に取った有給休暇の平均日数。" },
@@ -152,7 +152,8 @@
       '<span><i style="background:' + REGION.tokyo + '"></i>東京本社</span><span><i style="background:' + REGION.hokkaido + '"></i>北海道</span>' +
       (avg != null && have.length > 1 ? '<span><i class="dash"></i>平均 ' + fmt(avg, m.d) + m.unit + "</span>" : "") +
       "<span>（" + m.better + "）</span>";
-    document.getElementById("metricNote").innerHTML = esc(m.caption) + (m.key === "starting" ? " * は固定残業代込み・年俸÷12など、他社とそのまま比べにくい数字です。" : "") +
+    var cap = m.key === "starting" ? "「あなたの学歴」で選んだ「" + CC.eduLabel() + "」の初任給です。手当込みの会社もあります。" : m.caption;
+    document.getElementById("metricNote").innerHTML = esc(cap) + (m.key === "starting" ? " * は固定残業代込み・年俸÷12など、他社とそのまま比べにくい数字です。" : "") +
       (missing.length ? '<br><span class="missing">データなし（' + missing.length + "社）：" + missing.map(function (c) { return esc(CC.shortName(c.name)); }).join("、") + "</span>" : "");
   }
 
@@ -220,10 +221,12 @@
   // ===================== 強み・注意点の早見表（各社の詳細） =====================
   function quickPoints(c) {
     var s = CC.scoresOf(c), m = c.metrics || {}, pi = CC.payInfo(c);
+    var stx = CC.startingFor(c), sv = stx.status === "ok" ? stx.v : null, el = CC.eduLabel();
     var good = [], warn = [];
     // 数字から自動で判定（しきい値は下のとおり）
-    if (typeof c.startingMonthly === "number" && !m.startingNote && c.startingMonthly >= 30) good.push("初任給が高め（月" + c.startingMonthly + "万円）");
-    if (typeof c.startingMonthly === "number" && c.startingMonthly < 23) warn.push("初任給が低め（月" + c.startingMonthly + "万円" + (m.startingNote ? "・" + m.startingNote : "") + "）");
+    if (sv != null && !m.startingNote && sv >= 30) good.push(el + "の初任給が高め（月" + sv + "万円）");
+    if (sv != null && sv < 23) warn.push(el + "の初任給が低め（月" + sv + "万円" + (m.startingNote ? "・" + m.startingNote : "") + "）");
+    if (stx.status === "no") warn.push(el + "は応募対象外");
     if (m.startingNote) warn.push("初任給は" + m.startingNote + "のため、他社と単純に比べにくい");
     if (c.avgSalary && c.avgSalary.value >= 1000) good.push("平均年収が高い（" + c.avgSalary.value.toLocaleString() + "万円）");
     if (c.avgSalary && c.avgSalary.value < 700) warn.push("平均年収は低め（" + c.avgSalary.value.toLocaleString() + "万円）");
@@ -262,7 +265,7 @@
   }
 
   function renderAll() { renderKpis(); renderHeat(); renderMetric(); renderRadar(); renderCoverage(); }
-  document.addEventListener("cc:update", function () { renderHeat(); renderMetric(); renderRadar(); renderCoverage(); });
+  document.addEventListener("cc:update", function () { renderKpis(); renderHeat(); renderMetric(); renderRadar(); renderCoverage(); renderQuick(); });
   var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { renderMetric(); renderHeat(); }, 150); });
   renderMetricTabs();
   renderAll();

@@ -226,3 +226,14 @@ button.sort { background: none; border: 0; font: inherit; font-weight: 700; colo
 .quick ul { margin: 0; padding-left: 1.2em; font-size: 14px; }
 .quick li.none { color: var(--text-muted); list-style: none; margin-left: -1.2em; }
 @media (max-width: 600px) { .quick-grid { grid-template-columns: 1fr; } }
+
+.edu-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 8px 0 2px; padding: 10px 12px; border: 2px solid var(--accent); border-radius: 10px; }
+.edu-label { font-weight: 700; }
+.edu-row select { font: inherit; font-size: 15px; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--page); color: var(--text-primary); min-height: 36px; }
+.edu-table { width: auto; margin-top: 4px; font-size: 13px; }
+.edu-table th, .edu-table td { padding: 3px 8px; border-bottom: 1px solid var(--grid); position: static !important; background: transparent !important; width: auto !important; min-width: 0 !important; }
+.edu-table tr.edu-on th, .edu-table tr.edu-on td { background: color-mix(in srgb, var(--accent) 14%, transparent) !important; }
+.edu-table th { color: var(--text-secondary); font-weight: 600; white-space: nowrap; }
+.edu-no { color: var(--unknown); font-weight: 700; }
+.edu-un { color: var(--text-muted); }
+.edu-note { display: block; color: var(--text-muted); font-size: 12px; margin-top: 2px; }

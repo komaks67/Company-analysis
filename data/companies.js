@@ -9,6 +9,8 @@
 //   どちらもない場合は payEstimate.score（推定）を使い、それもなければ3点。
 //wlb / flex / future は
 //   集めた事実をもとにした「目安の評価」で、reasons に根拠を書く。
+// salaryByEdu: 学歴別の初任給（月額・万円）。s2=専門2・3年制, s4=専門4年制, kosen=高専, univ=大卒, grad=大学院卒。
+//   status: ok=金額あり / no=応募対象外 / unknown=不明
 // metrics: グラフ用の数値（overtimeH=月の残業時間, leaveDays=有給の平均取得日数,
 //   leaveRate=有給取得率%, maleParentalPct=男性育休取得率%）。出典は各項目の src と同じ。
 // =====================================================================
@@ -104,7 +106,27 @@ window.COMPANIES = [
         "url": "https://www.lycorp.co.jp/ja/recruit/workplace/benefits/"
       }
     ],
-    "metrics": {}
+    "metrics": {},
+    "salaryByEdu": {
+      "note": "エンジニア職は学歴・学部・学科不問（高専生・専門学生も応募可）。金額は非公開",
+      "src": "https://www.lycorp.co.jp/ja/recruit/newgrads/engineer/jd0001/",
+      "conf": "official",
+      "s2": {
+        "status": "unknown"
+      },
+      "s4": {
+        "status": "unknown"
+      },
+      "kosen": {
+        "status": "unknown"
+      },
+      "univ": {
+        "status": "unknown"
+      },
+      "grad": {
+        "status": "unknown"
+      }
+    }
   },
   {
     "id": "rakuten",
@@ -199,6 +221,26 @@ window.COMPANIES = [
       "leaveDays": 13.3,
       "leaveRate": 82.4,
       "maleParentalPct": 69.1
+    },
+    "salaryByEdu": {
+      "note": "ビジネス総合コースの応募資格は大学・大学院卒業予定者。エンジニア職の学歴要件と金額は要確認",
+      "src": "https://corp.rakuten.co.jp/careers/graduates/recruit_business/business.html",
+      "conf": "official",
+      "s2": {
+        "status": "unknown"
+      },
+      "s4": {
+        "status": "unknown"
+      },
+      "kosen": {
+        "status": "unknown"
+      },
+      "univ": {
+        "status": "unknown"
+      },
+      "grad": {
+        "status": "unknown"
+      }
     }
   },
   {
@@ -288,7 +330,27 @@ window.COMPANIES = [
         "url": "https://limo.media/articles/-/7522"
       }
     ],
-    "metrics": {}
+    "metrics": {},
+    "salaryByEdu": {
+      "note": "学歴別の初任給・応募資格は公開データなし",
+      "src": null,
+      "conf": "unknown",
+      "s2": {
+        "status": "unknown"
+      },
+      "s4": {
+        "status": "unknown"
+      },
+      "kosen": {
+        "status": "unknown"
+      },
+      "univ": {
+        "status": "unknown"
+      },
+      "grad": {
+        "status": "unknown"
+      }
+    }
   },
   {
     "id": "cyberagent",
@@ -383,6 +445,31 @@ window.COMPANIES = [
     ],
     "metrics": {
       "startingNote": "固定残業代（80時間分）込み"
+    },
+    "salaryByEdu": {
+      "note": "学年・学科・専攻不問（入社時に高卒以上）。初任給は学歴による差の記載なし（42万円〜、固定残業代込み）",
+      "src": "https://www.cyberagent.co.jp/careers/special/students/tech/faq.html",
+      "conf": "official",
+      "s2": {
+        "status": "ok",
+        "v": 42
+      },
+      "s4": {
+        "status": "ok",
+        "v": 42
+      },
+      "kosen": {
+        "status": "ok",
+        "v": 42
+      },
+      "univ": {
+        "status": "ok",
+        "v": 42
+      },
+      "grad": {
+        "status": "ok",
+        "v": 42
+      }
     }
   },
   {
@@ -478,6 +565,28 @@ window.COMPANIES = [
     ],
     "metrics": {
       "startingNote": "年俸600万円÷12（賞与込み）"
+    },
+    "salaryByEdu": {
+      "note": "年俸600万円〜（AIジェネラリスト）。専門・高専卒の応募可否は要確認",
+      "src": "https://gamebiz.jp/news/422255",
+      "conf": "secondary",
+      "s2": {
+        "status": "unknown"
+      },
+      "s4": {
+        "status": "unknown"
+      },
+      "kosen": {
+        "status": "unknown"
+      },
+      "univ": {
+        "status": "ok",
+        "v": 50
+      },
+      "grad": {
+        "status": "ok",
+        "v": 50
+      }
     }
   },
   {
@@ -572,6 +681,29 @@ window.COMPANIES = [
     ],
     "metrics": {
       "maleParentalPct": 103.1
+    },
+    "salaryByEdu": {
+      "note": "2026年4月入社予定者の初任給（グレード6）。専門卒の扱いは要確認",
+      "src": "https://plus.onecareer.jp/articles/1592",
+      "conf": "secondary",
+      "s2": {
+        "status": "unknown"
+      },
+      "s4": {
+        "status": "unknown"
+      },
+      "kosen": {
+        "status": "ok",
+        "v": 28.2
+      },
+      "univ": {
+        "status": "ok",
+        "v": 30
+      },
+      "grad": {
+        "status": "ok",
+        "v": 31.2
+      }
     }
   },
   {
@@ -669,6 +801,28 @@ window.COMPANIES = [
       "overtimeH": 5.1,
       "leaveRate": 73.4,
       "overtimeNote": "裁量労働でない若手のみ"
+    },
+    "salaryByEdu": {
+      "note": "応募資格は四年制大学・大学院の卒業（修了）見込み",
+      "src": "https://gaishishukatsu.com/recruiting_info/view/13627",
+      "conf": "secondary",
+      "s2": {
+        "status": "no"
+      },
+      "s4": {
+        "status": "no"
+      },
+      "kosen": {
+        "status": "no"
+      },
+      "univ": {
+        "status": "ok",
+        "v": 29.65
+      },
+      "grad": {
+        "status": "ok",
+        "v": 30.65
+      }
     }
   },
   {
@@ -763,6 +917,29 @@ window.COMPANIES = [
     ],
     "metrics": {
       "maleParentalPct": 94.1
+    },
+    "salaryByEdu": {
+      "note": "学歴別の初任給を廃止。月31.5万円〜（担う仕事で決定）。インターンは高専も対象。専門卒の応募可否は要確認",
+      "src": "https://job.career-tasu.jp/corp/00213137/employment/",
+      "conf": "secondary",
+      "s2": {
+        "status": "unknown"
+      },
+      "s4": {
+        "status": "unknown"
+      },
+      "kosen": {
+        "status": "ok",
+        "v": 31.5
+      },
+      "univ": {
+        "status": "ok",
+        "v": 31.5
+      },
+      "grad": {
+        "status": "ok",
+        "v": 31.5
+      }
     }
   },
   {
@@ -856,6 +1033,29 @@ window.COMPANIES = [
     ],
     "metrics": {
       "maleParentalPct": 50.6
+    },
+    "salaryByEdu": {
+      "note": "募集対象は大学（学部）・大学院・高専。専門学校は対象に含まれていない。2026年4月実績（参考値）",
+      "src": "https://jpn.nec.com/recruit/newgraduate/recruitinfo.html",
+      "conf": "official",
+      "s2": {
+        "status": "no"
+      },
+      "s4": {
+        "status": "no"
+      },
+      "kosen": {
+        "status": "ok",
+        "v": 27.95
+      },
+      "univ": {
+        "status": "ok",
+        "v": 30
+      },
+      "grad": {
+        "status": "ok",
+        "v": 32.08
+      }
     }
   },
   {
@@ -948,7 +1148,29 @@ window.COMPANIES = [
         "url": "https://talentsquare.co.jp/career/tis-salary/"
       }
     ],
-    "metrics": {}
+    "metrics": {},
+    "salaryByEdu": {
+      "note": "2025年4月の総合職。高専・専門卒は要確認",
+      "src": "https://internshipguide.jp/companies/company/1631",
+      "conf": "secondary",
+      "s2": {
+        "status": "unknown"
+      },
+      "s4": {
+        "status": "unknown"
+      },
+      "kosen": {
+        "status": "unknown"
+      },
+      "univ": {
+        "status": "ok",
+        "v": 25
+      },
+      "grad": {
+        "status": "ok",
+        "v": 26.7
+      }
+    }
   },
   {
     "id": "tads",
@@ -1052,6 +1274,32 @@ window.COMPANIES = [
     "metrics": {
       "overtimeH": 18.8,
       "leaveDays": 13.7
+    },
+    "salaryByEdu": {
+      "note": "大学卒は公式の2027年卒向け募集要項。その他の学歴は東京商工リサーチ掲載値（大学卒の額が公式と一致）。専門3年卒は月25.35万円。専門4年卒の区分は記載なし",
+      "src": "https://www.tsr-net.co.jp/alevel/detail/1200114_2071.html",
+      "conf": "secondary",
+      "s2": {
+        "status": "ok",
+        "v": 25.05,
+        "note": "短大・専門2年卒。専門3年卒は月25.35万円"
+      },
+      "s4": {
+        "status": "unknown"
+      },
+      "kosen": {
+        "status": "ok",
+        "v": 25.15
+      },
+      "univ": {
+        "status": "ok",
+        "v": 25.65,
+        "conf": "official"
+      },
+      "grad": {
+        "status": "ok",
+        "v": 26.25
+      }
     }
   },
   {
@@ -1075,9 +1323,9 @@ window.COMPANIES = [
     "avgSalary": null,
     "startingMonthly": 23.7,
     "startingSalary": {
-      "text": "北海道勤務：大卒 月23.7万円／院卒 月24.4万円。東京・大阪・山梨勤務：大卒 月29.7万円（調整手当6万円込み）※2027年4月",
-      "conf": "secondary",
-      "src": "https://job.mynavi.jp/28/pc/search/corp4685/outline.html"
+      "text": "大学・専門4年制卒 月23.7万円／大学院卒 月24.4万円／専門3年制卒 月22.34万円／専門2年制・高専・短大卒 月21.71万円（北海道勤務、2027年卒向け）。東京・大阪・山梨勤務は＋6万円",
+      "conf": "official",
+      "src": "https://www.hba.co.jp/recruit/requirements/"
     },
     "overtime": {
       "text": "月平均19時間（2025年度実績）",
@@ -1145,6 +1393,32 @@ window.COMPANIES = [
       "overtimeH": 19,
       "leaveDays": 17.4,
       "maleParentalPct": 76.9
+    },
+    "salaryByEdu": {
+      "note": "北海道勤務の2027年卒向け（公式）。東京・大阪・山梨勤務は調整手当6万円が上乗せ。専門3年制卒は月22.34万円",
+      "src": "https://www.hba.co.jp/recruit/requirements/",
+      "conf": "official",
+      "s2": {
+        "status": "ok",
+        "v": 21.71,
+        "note": "専門2年制。3年制は月22.34万円"
+      },
+      "s4": {
+        "status": "ok",
+        "v": 23.7
+      },
+      "kosen": {
+        "status": "ok",
+        "v": 21.71
+      },
+      "univ": {
+        "status": "ok",
+        "v": 23.7
+      },
+      "grad": {
+        "status": "ok",
+        "v": 24.4
+      }
     }
   },
   {
@@ -1167,9 +1441,9 @@ window.COMPANIES = [
     },
     "avgSalary": null,
     "startingSalary": {
-      "text": "大学卒 月23.79万円／大学院卒 月24.65万円（2025年4月実績）",
+      "text": "大学卒 月25.93万円／大学院卒 月26.79万円／高専卒 月24.64万円（2026年4月実績）",
       "conf": "secondary",
-      "src": "https://job.mynavi.jp/27/pc/corpinfo/displayPrevEmployment/index?corpId=51667&recruitingCourseId=26001737"
+      "src": "https://job.mynavi.jp/27/pc/search/corp51667/employment.html"
     },
     "overtime": {
       "text": "月平均25.6時間（2025年10月時点の公表値。前年度は26.2時間）",
@@ -1237,12 +1511,35 @@ window.COMPANIES = [
         "url": "https://en-ambi.com/job/j-16015298/"
       }
     ],
-    "startingMonthly": 23.79,
+    "startingMonthly": 25.932,
     "metrics": {
       "overtimeH": 25.6,
       "leaveDays": 21.5,
       "maleParentalPct": 66.7,
       "leaveNote": "夏季休暇5日を含む"
+    },
+    "salaryByEdu": {
+      "note": "2026年4月実績。専門学校卒の金額は記載なし（2025年は短大卒＝高専卒と同額）",
+      "src": "https://job.mynavi.jp/27/pc/search/corp51667/employment.html",
+      "conf": "secondary",
+      "s2": {
+        "status": "unknown"
+      },
+      "s4": {
+        "status": "unknown"
+      },
+      "kosen": {
+        "status": "ok",
+        "v": 24.642
+      },
+      "univ": {
+        "status": "ok",
+        "v": 25.932
+      },
+      "grad": {
+        "status": "ok",
+        "v": 26.792
+      }
     }
   },
   {
@@ -1263,14 +1560,10 @@ window.COMPANIES = [
       "src": "https://tenshoku.mynavi.jp/jobinfo-332443-4-22-1/"
     },
     "avgSalary": null,
-    "payEstimate": {
-      "score": 2,
-      "basis": "中途・第二新卒の初年度年収 350万〜650万円からの推定"
-    },
     "startingSalary": {
-      "text": "新卒は公開データなし（参考：中途・第二新卒の初年度年収 350万〜650万円）",
-      "conf": "unknown",
-      "src": "https://tenshoku.mynavi.jp/jobinfo-332443-4-22-1/"
+      "text": "大学卒 月20.5万〜21.0万円／大学院卒 月21.3万円／短大・専門・高専卒 月19.7万円（2024年4月実績）",
+      "conf": "secondary",
+      "src": "https://job.mynavi.jp/27/pc/corpinfo/displayPrevEmployment/index?corpId=79463&recruitingCourseId=26000115"
     },
     "overtime": {
       "text": "月10〜12時間程度（求人より）",
@@ -1333,7 +1626,32 @@ window.COMPANIES = [
     "metrics": {
       "overtimeH": 11,
       "overtimeNote": "求人の「10〜12時間」の中間"
-    }
+    },
+    "salaryByEdu": {
+      "note": "2024年4月実績（掲載によって大学卒は20.5万〜21.0万円と差あり）。募集対象に専門学校生・高専生を含む",
+      "src": "https://job.mynavi.jp/27/pc/corpinfo/displayPrevEmployment/index?corpId=79463&recruitingCourseId=26000115",
+      "conf": "secondary",
+      "s2": {
+        "status": "ok",
+        "v": 19.7
+      },
+      "s4": {
+        "status": "unknown"
+      },
+      "kosen": {
+        "status": "ok",
+        "v": 19.7
+      },
+      "univ": {
+        "status": "ok",
+        "v": 20.5
+      },
+      "grad": {
+        "status": "ok",
+        "v": 21.3
+      }
+    },
+    "startingMonthly": 20.5
   },
   {
     "id": "hotnet",
@@ -1355,9 +1673,9 @@ window.COMPANIES = [
     },
     "avgSalary": null,
     "startingSalary": {
-      "text": "大学卒 月22.23万円／大学院卒 月24.63万円（2024年4月実績）。賞与 約4.7カ月分（求人）",
-      "conf": "secondary",
-      "src": "https://job.mynavi.jp/27/pc/corpinfo/displayPrevEmployment/index?corpId=84367&recruitingCourseId=26027530"
+      "text": "大学卒 月25.0万円／大学院卒 月27.0万円／高専本科卒 月22.56万円／短大・専門卒 月21.76万円（2027年3月卒向け、固定残業代なし）",
+      "conf": "official",
+      "src": "https://www.hotnet.co.jp/recruit/job/new-graduate/"
     },
     "overtime": {
       "text": "月平均19.5時間（2024年度）",
@@ -1426,9 +1744,35 @@ window.COMPANIES = [
         "url": "https://www.openwork.jp/company.php?m_id=a0C1000000sj0Sl"
       }
     ],
-    "startingMonthly": 22.23,
+    "startingMonthly": 25,
     "metrics": {
       "overtimeH": 19.5
+    },
+    "salaryByEdu": {
+      "note": "2027年3月卒向け（公式、固定残業代なし）。応募資格欄は大学・大学院・高専のみ記載のため、専門卒は応募前に確認を",
+      "src": "https://www.hotnet.co.jp/recruit/job/new-graduate/",
+      "conf": "official",
+      "s2": {
+        "status": "ok",
+        "v": 21.76,
+        "note": "短大・専門卒。応募可否は要確認"
+      },
+      "s4": {
+        "status": "unknown"
+      },
+      "kosen": {
+        "status": "ok",
+        "v": 22.56,
+        "note": "高専本科卒。専攻科卒は月25.0万円"
+      },
+      "univ": {
+        "status": "ok",
+        "v": 25
+      },
+      "grad": {
+        "status": "ok",
+        "v": 27
+      }
     }
   },
   {
@@ -1525,6 +1869,26 @@ window.COMPANIES = [
     "metrics": {
       "overtimeH": 23.9,
       "leaveDays": 10.1
+    },
+    "salaryByEdu": {
+      "note": "学歴別の初任給は公開データなし",
+      "src": null,
+      "conf": "unknown",
+      "s2": {
+        "status": "unknown"
+      },
+      "s4": {
+        "status": "unknown"
+      },
+      "kosen": {
+        "status": "unknown"
+      },
+      "univ": {
+        "status": "unknown"
+      },
+      "grad": {
+        "status": "unknown"
+      }
     }
   },
   {
@@ -1629,6 +1993,31 @@ window.COMPANIES = [
       "overtimeH": 10,
       "leaveDays": 11.4,
       "startingNote": "固定残業代（10時間分）込み"
+    },
+    "salaryByEdu": {
+      "note": "想定月収20.8万円（固定残業10時間分込み）。学歴別の区分は見当たらない（2018年度は全学歴同額）",
+      "src": "https://www.ecomott.co.jp/recruit/requirements/",
+      "conf": "secondary",
+      "s2": {
+        "status": "ok",
+        "v": 20.8
+      },
+      "s4": {
+        "status": "ok",
+        "v": 20.8
+      },
+      "kosen": {
+        "status": "ok",
+        "v": 20.8
+      },
+      "univ": {
+        "status": "ok",
+        "v": 20.8
+      },
+      "grad": {
+        "status": "ok",
+        "v": 20.8
+      }
     }
   },
   {
@@ -1718,7 +2107,36 @@ window.COMPANIES = [
       }
     ],
     "startingMonthly": 25.06,
-    "metrics": {}
+    "metrics": {
+      "startingNote": "固定残業代（25時間分）込み"
+    },
+    "salaryByEdu": {
+      "note": "2025年6月実績。いずれも固定残業代（月25時間分）込み",
+      "src": "https://job.mynavi.jp/27/pc/search/corp265436/recruiting_course27010943/recruiting_course.html?site_preference=pc",
+      "conf": "secondary",
+      "s2": {
+        "status": "ok",
+        "v": 24.02,
+        "note": "専門・高専本科卒"
+      },
+      "s4": {
+        "status": "ok",
+        "v": 24.02,
+        "note": "専門・高専本科卒の区分"
+      },
+      "kosen": {
+        "status": "ok",
+        "v": 24.02
+      },
+      "univ": {
+        "status": "ok",
+        "v": 25.06
+      },
+      "grad": {
+        "status": "ok",
+        "v": 25.58
+      }
+    }
   },
   {
     "id": "crypton",
@@ -1813,6 +2231,31 @@ window.COMPANIES = [
       "overtimeH": 9.8,
       "leaveDays": 11.7,
       "leaveRate": 66.1
+    },
+    "salaryByEdu": {
+      "note": "固定残業代なし。掲載年度は要確認。専門4年制の区分は記載なし",
+      "src": "https://job.mynavi.jp/27/pc/search/corp223940/recruiting_course27014037/recruiting_course.html?site_preference=pc",
+      "conf": "secondary",
+      "s2": {
+        "status": "ok",
+        "v": 22.3,
+        "note": "短大・専門卒"
+      },
+      "s4": {
+        "status": "unknown"
+      },
+      "kosen": {
+        "status": "ok",
+        "v": 22.3
+      },
+      "univ": {
+        "status": "ok",
+        "v": 23.8
+      },
+      "grad": {
+        "status": "ok",
+        "v": 24.8
+      }
     }
   },
   {
@@ -1892,6 +2335,26 @@ window.COMPANIES = [
         "url": "https://awl.co.jp/wp-content/uploads/2022/10/Hokkaido-Univ-Career-Handbook-2023-AWL.pdf"
       }
     ],
-    "metrics": {}
+    "metrics": {},
+    "salaryByEdu": {
+      "note": "学歴別の初任給は公開データなし",
+      "src": null,
+      "conf": "unknown",
+      "s2": {
+        "status": "unknown"
+      },
+      "s4": {
+        "status": "unknown"
+      },
+      "kosen": {
+        "status": "unknown"
+      },
+      "univ": {
+        "status": "unknown"
+      },
+      "grad": {
+        "status": "unknown"
+      }
+    }
   }
 ];
